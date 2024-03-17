@@ -1,0 +1,5 @@
+post_remove() {
+  echo "Removing generated files"
+  rm -fv /usr/local/bin/klipper_mcu
+  rm -frv /usr/lib/klipper/out
+}
