@@ -1,6 +1,6 @@
 pkgname=klipper-tmc-autotune-git
 _pkgname=klipper_tmc_autotune
-pkgver=r229.6463d8a
+pkgver=r231.6224b77
 pkgrel=1
 pkgdesc="Klipper extension for automatic configuration and tuning of TMC drivers"
 arch=('any')

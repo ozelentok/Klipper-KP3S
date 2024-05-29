@@ -1,0 +1,33 @@
+pkgname='python-streaming-form-data-git'
+_pkgname=streaming-form-data
+pkgver=1.15.0
+pkgrel=1
+pkgdesc="Streaming multipart/form-data parser"
+arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h' 'aarch64')
+url="https://github.com/siddhantgoel/streaming-form-data"
+license=('MIT')
+makedepends=('python-build' 'python-installer' 'python-wheel')
+depends=('python-smart_open')
+provides=('python-streaming-form-data')
+conflicts=('python-streaming-form-data')
+source=("git+https://github.com/siddhantgoel/streaming-form-data.git#branch=stable")
+sha256sums=('SKIP')
+
+pkgver() {
+  cd "$srcdir/$_pkgname"
+  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+  cd "$srcdir/$_pkgname"
+  rm -f dist/*.whl
+  python -m build --wheel --no-isolation
+}
+
+package() {
+  cd "$srcdir/$_pkgname"
+
+  python -m installer --destdir="${pkgdir}" dist/*.whl
+
+  install -Dm644 LICENSE.txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt"
+}
