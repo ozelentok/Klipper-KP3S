@@ -1,6 +1,6 @@
 pkgname="moonraker-git"
 _pkgname=moonraker
-pkgver=r2031.a3e4dac
+pkgver=r2081.5332eab
 pkgrel=1
 pkgdesc="HTTP frontend for Klipper 3D printer firmware"
 arch=(any)
