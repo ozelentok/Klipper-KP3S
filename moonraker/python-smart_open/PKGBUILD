@@ -6,14 +6,16 @@ pkgdesc="Library for efficient streaming of very large files from/to S3, HDFS, W
 arch=('any')
 url="https://github.com/RaRe-Technologies/smart_open"
 license=('MIT')
-depends=("python-wrapt")
-optdepends=("python-boto3: AWS support"
+depends=(python-wrapt)
+optdepends=(
+  "python-boto3: AWS support"
   "python-requests: HTTP support"
   "python-paramiko: SSH support"
-  "python-zstandard: zstd support")
-makedepends=('python-build' 'python-installer' 'python-wheel' 'python-setuptools')
-provides=('python-smart_open')
-conflicts=('python-smart_open')
+  "python-zstandard: zstd support"
+)
+makedepends=(python-build python-installer python-wheel python-setuptools)
+provides=(python-smart_open)
+conflicts=(python-smart_open)
 source=("git+https://github.com/piskvorky/smart_open.git#branch=master")
 sha512sums=('SKIP')
 
