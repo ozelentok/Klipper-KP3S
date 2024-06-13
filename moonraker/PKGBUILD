@@ -6,44 +6,51 @@ pkgdesc="HTTP frontend for Klipper 3D printer firmware"
 arch=(any)
 url="https://github.com/Arksine/moonraker"
 license=('GPL3')
-depends=(klipper
-         python-tornado
-         python-pillow
-         python-pyserial-asyncio
-         python-lmdb
-         python-streaming-form-data
-         python-distro
-         python-inotify-simple
-         python-libnacl
-         python-paho-mqtt
-         python-jinja
-         python-dbus-next
-         python-periphery
-         curl)
+depends=(
+  klipper
+  python-tornado
+  python-pillow
+  python-pyserial-asyncio
+  python-lmdb
+  python-streaming-form-data
+  python-distro
+  python-inotify-simple
+  python-libnacl
+  python-paho-mqtt
+  python-jinja
+  python-dbus-next
+  python-periphery
+  curl
+)
 makedepends=(git python-build python-installer python-wheel python-pdm)
-optdepends=("polkit: enable service and machine control through moonraker"
-            "python-preprocess-cancellation: enables exclude object processing"
-            "python-apprise: enable [notifier] module for sending notifications"
-            "python-ldap3: [authorization] using LDAP"
-            "python-msgspec: optional speedup"
-            "python-uvloop: optional speedup"
-            "python-zeroconf: enable zeroconf announcements"
-            "wireless_tools: network detection")
+optdepends=(
+  "polkit: enable service and machine control through moonraker"
+  "python-preprocess-cancellation: enables exclude object processing"
+  "python-apprise: enable [notifier] module for sending notifications"
+  "python-ldap3: [authorization] using LDAP"
+  "python-msgspec: optional speedup"
+  "python-uvloop: optional speedup"
+  "python-zeroconf: enable zeroconf announcements"
+  "wireless_tools: network detection")
 provides=("$_pkgname")
 conflicts=("$_pkgname")
 backup=('var/lib/klipper/moonraker.conf')
-source=('git+https://github.com/Arksine/moonraker.git#branch=master'
-        'moonraker.conf'
-        'moonraker.service'
-        'moonraker.rules'
-        'sysusers.conf'
-        'tmpfiles.conf')
-sha256sums=('SKIP'
-            'ea46cdc1479f70e84697c7e143c011a8d4017b7e7b9fe3eb98b938c939f3ac9b'
-            'c645348d769860a1384a6484796043464c152ddf15c8dd08398e08b49993cf76'
-            '9fa5608f9af813841c1b47e730a1ae6b04eae4623c5260b70cda30ad2f83adfc'
-            '549309fd129c8c665a5aed2d4229c20e5a9927f4fbdc937e0982db4785b9ee0d'
-            '7dc70e62589d85d97fac598dce73f3ce052c76a82a77dd8a10c36ee7ad5a4ff5')
+source=(
+  'git+https://github.com/Arksine/moonraker.git#branch=master'
+  'moonraker.conf'
+  'moonraker.service'
+  'moonraker.rules'
+  'sysusers.conf'
+  'tmpfiles.conf'
+)
+sha256sums=(
+  'SKIP'
+  'ea46cdc1479f70e84697c7e143c011a8d4017b7e7b9fe3eb98b938c939f3ac9b'
+  'c645348d769860a1384a6484796043464c152ddf15c8dd08398e08b49993cf76'
+  '9fa5608f9af813841c1b47e730a1ae6b04eae4623c5260b70cda30ad2f83adfc'
+  '549309fd129c8c665a5aed2d4229c20e5a9927f4fbdc937e0982db4785b9ee0d'
+  '7dc70e62589d85d97fac598dce73f3ce052c76a82a77dd8a10c36ee7ad5a4ff5'
+)
 
 pkgver() {
   cd "$srcdir/$_pkgname"

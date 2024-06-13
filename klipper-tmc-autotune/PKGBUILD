@@ -6,8 +6,8 @@ pkgdesc="Klipper extension for automatic configuration and tuning of TMC drivers
 arch=('any')
 url="https://github.com/andrewmcgr/${_pkgname}"
 license=('GPL3')
-depends=('klipper')
-makedepends=('python')
+depends=(klipper)
+makedepends=(python)
 source=("git+https://github.com/andrewmcgr/${_pkgname}")
 sha256sums=('SKIP')
 

@@ -6,20 +6,20 @@
 - Input Shaper tuned
 - Fly-ADXL345 Accelerometer support
 - Stepper drivers UART enabled and configured with [TMC Autoune](https://github.com/andrewmcgr/klipper_tmc_autotune)
-- Improved input shaping tuning and vibration testing with [Klipper-ShakeTune](https://github.com/ozelentok/klipper-shaketune) (Patched version of [Klippain-Shake&Tune](https://github.com/Frix-x/klippain-shaketune) to allow running ShakeTune as an in-process Klipper module)
-- Custom [Klipper](https://github.com/ozelentok/klipper) to support latest newlib and a compatibility patch for Klipper-ShakeTune
+- Improved input shaping tuning and vibration testing with [Klippain-Shake&Tune](https://github.com/Frix-x/klippain-shaketune)
+- Custom [Klipper](https://github.com/ozelentok/klipper) to support latest newlib
 - Moonraker configured
 
 ## Installation under Arch Linux
-1. Install the `klipper`, `moonraker`, `klipper-shaketune` and `klipper-tmc-autotune` using the supplied PKGBUILDs
+1. Install the `klipper`, `moonraker`, `klippain-shaketune` and `klipper-tmc-autotune` using the supplied PKGBUILDs
 ```bash
 # Manually
-for f in  klipper moonraker/python-smart_open moonraker/python-streaming-form-data moonraker klipper-shaketune klipper-tmc-autotune; do
+for f in  klipper moonraker/python-smart_open moonraker/python-streaming-form-data moonraker python-pywavelets klippain-shaketune klipper-tmc-autotune; do
   (cd $f; makepkg -si)
 done
 
 # With AUR helper
-pikaur -Pi {klipper,moonraker/python-smart_open,moonraker/python-streaming-form-data,moonraker,klipper-shaketune,klipper-tmc-autotune}/PKGBUILD
+pikaur -Pi {klipper,moonraker/python-smart_open,moonraker/python-streaming-form-data,moonraker,python-pywavelets,klippain-shaketune,klipper-tmc-autotune}/PKGBUILD
 
 # Enable services
 sudo systemctl enable --now klipper moonraker
