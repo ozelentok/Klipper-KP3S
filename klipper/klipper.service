@@ -10,6 +10,6 @@ Type=simple
 User=klipper
 RemainAfterExit=no
 Environment=PYTHONUNBUFFERED=1
-ExecStart=/usr/bin/python /usr/lib/klipper/klippy/klippy.py /var/lib/klipper/config/printer.cfg -I /run/klipper/sock -a /run/klipper/ud_sock
+ExecStart=/opt/3d-printer/klipper-venv/bin/python /opt/3d-printer/klipper/klippy/klippy.py /var/lib/klipper/config/printer.cfg -I /run/klipper/sock -a /run/klipper/ud_sock
 Restart=always
 RestartSec=10
