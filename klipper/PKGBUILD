@@ -1,28 +1,29 @@
-pkgname=klipper-oz-git
+pkgname=klipper-oz
 _pkgname=klipper
-pkgver=r5339.2ee9da9e
+pkgver=20240803
 pkgrel=1
 pkgdesc="3D printer firmware with motion planning on the host"
 arch=('x86_64' 'i686' 'arm' 'armv6h' 'armv7h' 'aarch64')
 url="https://www.klipper3d.org/"
 license=('GPL3')
 depends=(
+  git
+  libusb
+  ncurses
   python-cffi
   python-pyserial
   python-greenlet
   python-jinja
   python-can
-  libusb
+  python-numpy
+  python-matplotlib
 )
 optdepends=(
-  'ncurses: for choosing compilation config'
   'avrdude: for flashing firmware on AVR MCU'
   'stm32flash: for flashing firmware on STM MCU'
   'avr-gcc: for AVR MCU firmware compilation'
   'avr-binutils: for AVR MCU firmware compilation'
   'avr-libc: for AVR MCU firmware compilation'
-  'python-numpy: for resonance measurement'
-  'python-matplotlib: for resonance measurement'
   'dfu-util: for flashing firmware on STM32 MCUs'
 )
 optdepends_x86_64=(
@@ -30,67 +31,26 @@ optdepends_x86_64=(
   'arm-none-eabi-gcc: for ARM MCU firmware compilation'
   'arm-none-eabi-binutils: for ARM MCU firmware compilation'
 )
-makedepends=(git)
+
 provides=("$_pkgname")
 conflicts=("$_pkgname")
-backup=("usr/lib/${_pkgname}/.config")
-install='klipper.install'
+install="${_pkgname}.install"
 source=(
-  "${_pkgname}::git+https://github.com/ozelentok/${_pkgname}"
   'klipper.service'
   'sysusers.conf'
   'tmpfiles.conf'
+  'kp3s-config'
 )
 sha256sums=(
-  'SKIP'
-  '418448d64356458d7dd095d3cc24748599979fbe47645f94201c8bd99a102623'
+  '59c1b148329cad216e69d15b59f43041d38d148a8d20343449286680c3814d03'
   '538d60c922af08f65678c8f0c589865ba11030635d8d175b938f609c564c8f0a'
-  '29ec6cbf816e64564b73d64c9fb2fa70cf6d50b328d218285f88308f8655141e'
+  '6ae79b352109c20571fec01e7656731234a38db86d28e9a6d8137d93f16a51d5'
+  'c63d7aa051ed30b289c2120c2be544ab9cd97f8bfd3235e78dbdd8e189e2329d'
 )
 
-pkgver() {
-  cd "$srcdir/$_pkgname"
-  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
-}
-
-build() {
-  cd "$srcdir/$_pkgname"
-  python -m compileall klippy
-  python klippy/chelper/__init__.py
-}
-
 package() {
-  cd "$srcdir/$_pkgname"
   install -Dm644 "$srcdir/klipper.service" "$pkgdir/usr/lib/systemd/system/${_pkgname}.service"
-  install -Dm644 "$srcdir/sysusers.conf" "$pkgdir/usr/lib/sysusers.d/${_pkgname}.conf"
-  install -Dm644 "$srcdir/tmpfiles.conf" "$pkgdir/usr/lib/tmpfiles.d/${_pkgname}.conf"
-
-  install -m755 -d "$pkgdir/usr/lib/${_pkgname}"
-  install -m755 -d "$pkgdir/usr/lib/${_pkgname}/docs"
-  install -m755 -d "$pkgdir/usr/lib/${_pkgname}/config"
-  install -m755 -d "$pkgdir/usr/lib/${_pkgname}/klippy"
-  install -m755 -d "$pkgdir/usr/lib/${_pkgname}/lib"
-  install -m755 -d "$pkgdir/usr/lib/${_pkgname}/src"
-  install -m755 -d "$pkgdir/usr/lib/${_pkgname}/scripts"
-  install -m2775 -d "$pkgdir/usr/lib/${_pkgname}/out"
-
-  install -m755 -d "$pkgdir/var/lib/${_pkgname}/config"
-  install -m755 -d "$pkgdir/etc"
-  ln -s "/var/lib/${_pkgname}/config" "$pkgdir/etc/${_pkgname}"
-
-  cp -ra "$srcdir/${_pkgname}/docs"/* "$pkgdir/usr/lib/${_pkgname}/docs"/
-  cp -ra "$srcdir/${_pkgname}/config/"* "$pkgdir/usr/lib/${_pkgname}/config"/
-  cp -ra "$srcdir/${_pkgname}/klippy/"* "$pkgdir/usr/lib/${_pkgname}/klippy"/
-  cp -ra "$srcdir/${_pkgname}/scripts/"* "$pkgdir/usr/lib/${_pkgname}/scripts"/
-  cp -ra "$srcdir/${_pkgname}/lib/"* "$pkgdir/usr/lib/${_pkgname}/lib"/
-  cp -ra "$srcdir/${_pkgname}/Makefile" "$pkgdir/usr/lib/${_pkgname}"/
-  cp -ra "$srcdir/${_pkgname}/src/"* "$pkgdir/usr/lib/${_pkgname}/src"/
-
-  mkdir -p "$pkgdir/usr/share/doc"
-  ln -s "/usr/lib/${_pkgname}/docs" "$pkgdir/usr/share/doc/${_pkgname}"
-
-  touch "$srcdir/${_pkgname}/.config"
-  install -m664 "$srcdir/${_pkgname}/.config" "$pkgdir/usr/lib/${_pkgname}/.config"
-
-  python scripts/make_version.py ARCHLINUX > "$pkgdir/usr/lib/${_pkgname}/klippy/.version"
+  install -Dm644 "$srcdir/sysusers.conf"   "$pkgdir/usr/lib/sysusers.d/${_pkgname}.conf"
+  install -Dm644 "$srcdir/tmpfiles.conf"   "$pkgdir/usr/lib/tmpfiles.d/${_pkgname}.conf"
+  install -Dm644 "$srcdir/kp3s-config"     "$pkgdir/var/lib/klipper/kp3s-config"
 }

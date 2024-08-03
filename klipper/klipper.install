@@ -1,5 +1,21 @@
+#!/usr/bin/env bash
+
+PREFIX=/opt/3d-printer
+
+post_install() {
+  git clone https://github.com/ozelentok/klipper "${PREFIX}/klipper"
+  python3 -m venv --system-site-packages         "${PREFIX}/klipper-venv"
+  (
+    cd "${PREFIX}/klipper" || exit 1
+    "${PREFIX}/klipper-venv/bin/pip" install -r scripts/klippy-requirements.txt
+    "${PREFIX}/klipper-venv/bin/python" -m compileall klippy
+    "${PREFIX}/klipper-venv/bin/python" klippy/chelper/__init__.py
+    cp "/var/lib/klipper/kp3s-config" "${PREFIX}/klipper/.config"
+  )
+}
+
 post_remove() {
-  echo "Removing generated files"
-  rm -fv /usr/local/bin/klipper_mcu
-  rm -frv /usr/lib/klipper/out
+  echo "Removing klipper installation"
+  rm -frv ${PREFIX}/klipper
+  rm -frv ${PREFIX}/klipper-venv
 }

@@ -5,30 +5,46 @@
 - BLTouch ABL Sensor support
 - Input Shaper tuned
 - Fly-ADXL345 Accelerometer support
-- Stepper drivers UART enabled and configured with [TMC Autoune](https://github.com/andrewmcgr/klipper_tmc_autotune)
-- Improved input shaping tuning and vibration testing with [Klippain-Shake&Tune](https://github.com/Frix-x/klippain-shaketune)
-- Custom [Klipper](https://github.com/ozelentok/klipper) to support latest newlib
-- Moonraker configured
+- Stepper drivers UART enabled and configured with [TMC Autotune](https://github.com/andrewmcgr/klipper_tmc_autotune)
+- Improved input shaping tuning and vibration testing with [Klippain-Shake&Tune](https://github.com/frix-x/klippain-shaketune)
+- Updates to all components through Moonraker's update manager
 
 ## Installation under Arch Linux
-1. Install the `klipper`, `moonraker`, `klippain-shaketune` and `klipper-tmc-autotune` using the supplied PKGBUILDs
 ```bash
-# Manually
-for f in  klipper moonraker/python-smart_open moonraker/python-streaming-form-data moonraker python-pywavelets klippain-shaketune klipper-tmc-autotune; do
+# Install `klipper` and `moonraker` using the supplied PKGBUILDs
+for f in  klipper moonraker; do
   (cd $f; makepkg -si)
 done
 
-# With AUR helper
-pikaur -Pi {klipper,moonraker/python-smart_open,moonraker/python-streaming-form-data,moonraker,python-pywavelets,klippain-shaketune,klipper-tmc-autotune}/PKGBUILD
 
-# Enable services
-sudo systemctl enable --now klipper moonraker
-````
-2. Copy Klipper's configuration files
-```bash
+# Setup fluidd
+curl -L https://github.com/fluidd-core/fluidd/releases/download/v1.30.1/fluidd.zip -o /tmp/fluidd.zip
+# Link fluidd to nginx default public directory
+PREFIX=/opt/3d-printer
+sudo mkdir "${PREFIX}/fluidd"
+(cd "${PREFIX}/fluidd"; sudo unzip /tmp/fluidd.zip)
+sudo chown klipper:klipper "${PREFIX}/fluidd"
+sudo ln -s "${PREFIX}/fluidd" /srv/http/fluidd
+
+
+# Setup TMC Autotune
+TMC_PATH="${PREFIX}/klipper_tmc_autotune"
+KLIPPY_PATH="${PREFIX}/klipper/klippy"
+sudo git clone https://github.com/andrewmcgr/klipper_tmc_autotune "${TMC_PATH}"
+sudo ln -srfn "${TMC_PATH}/autotune_tmc.py"    "${KLIPPY_PATH}/extras/autotune_tmc.py"
+sudo ln -srfn "${TMC_PATH}/motor_constants.py" "${KLIPPY_PATH}/extras/motor_constants.py"
+sudo ln -srfn "${TMC_PATH}/motor_database.cfg" "${KLIPPY_PATH}/extras/motor_database.cfg"
+
+
+# Setup Shake&Tune
+ST_PATH="${PREFIX}/klippain_shaketune"
+sudo cp shaketune-requirements.txt "${PREFIX}/"
+sudo git clone https://github.com/frix-x/klippain-shaketune "${ST_PATH}"
+sudo ln -srfn "${ST_PATH}/shaketune" "${KLIPPY_PATH}/extras/shaketune"
+
+
+# Copy configuration files
 sudo cp -r config/* /var/lib/klipper/config
-sudo cp klipper/kp3s-config /usr/lib/klipper/.config
-sudo chown -h -R klipper:klipper /var/lib/klipper/config /usr/lib/klipper/.config
+sudo systemd-tmpfiles --create
+sudo systemctl enable --now klipper moonraker
 ```
-3. To enable the accelerometer, uncomment `[include adxl.cfg]` in `/etc/klipper/printer.cfg` and restart Klipper
-4. The klipper directory is owned by the klipper user to support the Moonraker Update Manager, although I prefer rebuilding the packages and writing PKGBUILDs for plugins

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+PREFIX=/opt/3d-printer
+
+post_install() {
+  git clone https://github.com/ozelentok/moonraker "${PREFIX}/moonraker"
+  python3 -m venv --system-site-packages           "${PREFIX}/moonraker-venv"
+  (
+    cd "${PREFIX}/moonraker" || exit 1
+    "${PREFIX}/moonraker-venv/bin/pip" install -r "${PREFIX}/moonraker/scripts/moonraker-requirements.txt"
+    "${PREFIX}/moonraker-venv/bin/python" -m compileall moonraker
+  )
+}
+
+post_remove() {
+  echo "Removing moonraker git installation"
+  rm -frv "${PREFIX}/moonraker"
+  rm -frv "${PREFIX}/moonraker-venv"
+}

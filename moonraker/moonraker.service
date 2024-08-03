@@ -9,7 +9,7 @@ User=klipper
 SupplementaryGroups=moonraker-admin
 SyslogIdentifier=moonraker
 RemainAfterExit=yes
-ExecStart=/usr/bin/python -m moonraker -n -d /var/lib/klipper -c /var/lib/klipper/moonraker.conf
+ExecStart=/opt/3d-printer/moonraker-venv/bin/python /opt/3d-printer/moonraker/moonraker/moonraker.py -n -d /var/lib/klipper -c /var/lib/klipper/moonraker.conf
 Restart=always
 RestartSec=10
 
