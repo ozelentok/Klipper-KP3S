@@ -18,7 +18,7 @@ done
 
 
 # Setup fluidd
-curl -L https://github.com/fluidd-core/fluidd/releases/download/v1.30.1/fluidd.zip -o /tmp/fluidd.zip
+curl -L https://github.com/fluidd-core/fluidd/releases/download/v1.30.4/fluidd.zip -o /tmp/fluidd.zip
 # Link fluidd to nginx default public directory
 PREFIX=/opt/3d-printer
 sudo mkdir "${PREFIX}/fluidd"
