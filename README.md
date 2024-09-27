@@ -16,8 +16,8 @@ for f in  klipper moonraker; do
   (cd $f; makepkg -si)
 done
 
-
 # Setup fluidd
+sudo pacman -Syu nginx-mainline
 curl -L https://github.com/fluidd-core/fluidd/releases/download/v1.30.4/fluidd.zip -o /tmp/fluidd.zip
 # Link fluidd to nginx default public directory
 PREFIX=/opt/3d-printer
@@ -46,5 +46,5 @@ sudo ln -srfn "${ST_PATH}/shaketune" "${KLIPPY_PATH}/extras/shaketune"
 # Copy configuration files
 sudo cp -r config/* /var/lib/klipper/config
 sudo systemd-tmpfiles --create
-sudo systemctl enable --now klipper moonraker
+sudo systemctl enable --now klipper moonraker nginx
 ```
