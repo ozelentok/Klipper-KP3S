@@ -1,8 +1,7 @@
 # Klipper for Kingroon KP3S 3.0
 
-## Configuration Summary
-- CHT Volcano 0.6mm nozzle
-- BLTouch ABL Sensor support
+- Tuned for CHT Volcano 0.6 mm nozzle
+- 3D Touch ABL Sensor support
 - Input Shaper tuned
 - Fly-ADXL345 Accelerometer support
 - Stepper drivers UART enabled and configured with [TMC Autotune](https://github.com/andrewmcgr/klipper_tmc_autotune)
@@ -10,6 +9,10 @@
 - Updates to all components through Moonraker's update manager
 
 ## Installation under Arch Linux
+> [!NOTE]
+> To support updating klipper and moonraker through moonraker's update manager, the built packages don't contain the actual code of klipper and moonraker, they install their dependencies and system files.
+> After the installation of the packages, an automatic post install script initializes their git repositories. That way moonraker's update manager will handle the updating instead of the system package manager
+
 ```bash
 # Install `klipper` and `moonraker` using the supplied PKGBUILDs
 for f in  klipper moonraker; do
