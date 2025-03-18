@@ -19,11 +19,14 @@ for f in  klipper moonraker; do
   (cd $f; makepkg -si)
 done
 
+# Set prefix
+PREFIX=/opt/3d-printer
+
+
 # Setup fluidd
 sudo pacman -Syu nginx-mainline
-curl -L https://github.com/fluidd-core/fluidd/releases/download/v1.31.4/fluidd.zip -o /tmp/fluidd.zip
+curl -L https://github.com/fluidd-core/fluidd/releases/download/v1.33.0/fluidd.zip -o /tmp/fluidd.zip
 # Link fluidd to nginx default public directory
-PREFIX=/opt/3d-printer
 sudo mkdir "${PREFIX}/fluidd"
 (cd "${PREFIX}/fluidd"; sudo unzip /tmp/fluidd.zip)
 sudo chown klipper:klipper "${PREFIX}/fluidd"
