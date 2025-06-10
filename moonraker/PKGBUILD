@@ -21,7 +21,6 @@ depends=(
   python-dbus-next
   apprise
   python-ldap3
-  python-periphery
   python-uvloop
   libsodium
 )
